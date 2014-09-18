@@ -7,7 +7,7 @@
 
 ;; Erlang Emacs Mode -- Configuration Start
 (setq erlang-root-dir "/usr/local/lib/erlang")
-(setq load-path (cons  "/usr/local/lib/erlang/lib/tools-2.6.13/emacs" load-path))
+(setq load-path (cons  "/usr/local/lib/erlang/lib/tools-2.6.15/emacs" load-path))
 (setq exec-path (cons "/usr/local/lib/erlang/bin" exec-path))
 (require 'erlang-start)
 ;; Erlang Emacs Mode -- Configuration End

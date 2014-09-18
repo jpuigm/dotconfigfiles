@@ -1,0 +1,9 @@
+# ~/.tmuxinator/notes.yml
+
+name: notes
+root: ~/Documents/
+
+windows:
+  - todo: emacs notes/todo
+  - personal: emacs notes/personaldevelopment notes/mentores
+  - cv: emacs Career/cv

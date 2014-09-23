@@ -29,15 +29,19 @@
 (setq-default c-basic-offset 4)
 
 ;; Misc
-(column-number-mode)
+(line-number-mode)
+(column-number-mode) ;; displays column and line numbers
 (delete-selection-mode 1)
-(linum-mode)
 (show-paren-mode)
 
 ;; Ido-mode - Shows folder contents while looking for a file.
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
+
+;; CoffeeScript
+(custom-set-variables '(coffee-tab-width 2))
+(setq tab-width 2)
 
 ;; Stolen from http://www.emacswiki.org/emacs/FlyMake
 ;; Shows flymake message even in xterm by typing C-c f
@@ -74,12 +78,32 @@
 
 ;(eval-after-load "magit" 
 ;  '(mapc (apply-partially 'add-to-list 'magit-repo-dirs)
-;               '("~/dev/src/cloudshare" "~/dev/src/tessellate")))
+;               '("~/dev/src/project1" "~/dev/src/project2")))
 
 ;; change magit diff colors
 (eval-after-load 'magit
   '(progn
      (set-face-background 'magit-item-highlight "White")))
+
+;; JavaScript
+(autoload 'js3-mode "js3" nil t)
+   (add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
+
+(require 'handlebars-mode)
+
+;; ;; go mode
+;; (setq load-path (cons "/usr/local/go/misc/emacs" load-path))
+;; (require 'go-mode-load)
+
+;; ;; .org
+;; (setq load-path (cons "/Users/maggie-mbp/Downloads/Other/org-mode/lisp" load-path))
+;; (setq load-path (cons "/Users/maggie-mbp/Downloads/Other/org-mode/contrib/lisp" load-path))
+;; ;; The following lines are always needed.  Choose your own keys.
+;; (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode)) ; not needed since Emacs 22.2
+;; (add-hook 'org-mode-hook 'turn-on-font-lock) ; not needed when global-font-lock-mode is on
+;; (global-set-key "\C-cl" 'org-store-link)
+;; (global-set-key "\C-ca" 'org-agenda)
+;; (global-set-key "\C-cb" 'org-iswitchb)
 
 ;; ;;jabber.erl 
 ;; (setq jabber-username "jupi2004" ;; notice: leave off the @gmail.com
@@ -125,3 +149,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;;rsense
+(require 'rsense)
+
+;;rinari
+(require 'rinari)
+(global-rinari-mode)
+
+;; Ruby lines
+(add-hook 'after-init-hook 'inf-ruby-switch-setup)
+(add-hook 'ruby-mode-hook 'linum-mode) ;; technically using 'prog-mode-hook instead would work for all major prog modes

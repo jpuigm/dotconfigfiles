@@ -1,0 +1,13 @@
+# ~/.tmuxinator/pierlang.yml
+
+name: pierlang
+root: ~/dev/src/pierlang
+
+windows:
+  - editor: emacs .
+  - server: rel/pierlang/bin/pierlang console
+  - logs: 
+      layout: main-horizontal
+      panes:
+        - tail -f log/crash.log
+        - tail -f log/error.log

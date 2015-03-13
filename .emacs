@@ -7,14 +7,89 @@
 
 ;; Erlang Emacs Mode -- Configuration Start
 (setq erlang-root-dir "/usr/local/lib/erlang")
-(setq load-path (cons  "/usr/local/lib/erlang/lib/tools-2.6.15/emacs" load-path))
+(setq load-path (cons (car (file-expand-wildcards (concat erlang-root-dir "/lib/tools-*/emacs"))) load-path))
+(setq erlang-electric-commands nil)
 (setq exec-path (cons "/usr/local/lib/erlang/bin" exec-path))
 (require 'erlang-start)
 ;; Erlang Emacs Mode -- Configuration End
 
-(add-to-list 'load-path "/Users/juan/dev/src/edts")
-(require 'edts-start)
+(add-hook 'after-init-hook 'my-after-init-hook)
+(defun my-after-init-hook ()
+  (require 'edts-start))
 
+(add-hook 'erlang-mode-hook
+          '(lambda()
+             (imenu-add-to-menubar "Imenu")))
+
+; define auto erlang mode for these files/extensions.
+(add-to-list 'auto-mode-alist '(".*\\.app\\'" . erlang-mode))
+(add-to-list 'auto-mode-alist '(".*app\\.src\\'" . erlang-mode))
+(add-to-list 'auto-mode-alist '(".*\\.config\\'" . erlang-mode))
+(add-to-list 'auto-mode-alist '(".*\\.rel\\'" . erlang-mode))
+(add-to-list 'auto-mode-alist '(".*\\.script\\'" . erlang-mode))
+(add-to-list 'auto-mode-alist '(".*\\.escript\\'" . erlang-mode))
+
+; add include directory to default compile path.
+(defvar erlang-compile-extra-opts
+  '(bin_opt_info debug_info (i . "../include") (i . "../deps") (i . "../../") (i . "../../../deps")))
+
+; define where put beam files.
+(setq erlang-compile-outdir "../ebin")
+
+;;;----------------------------------------
+;;; flymake
+;;;----------------------------------------
+
+(require 'flymake)
+(setq flymake-log-level 3)
+
+(defun flymake-compile-script-path (path)
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                     'flymake-create-temp-inplace))
+         (local-file (file-relative-name
+                      temp-file
+                      (file-name-directory buffer-file-name))))
+    (list path (list local-file))))
+
+(defun flymake-syntaxerl ()
+  (flymake-compile-script-path "~/bin/syntaxerl"))
+
+(add-hook 'erlang-mode-hook
+          '(lambda()
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.erl\\'" flymake-syntaxerl))
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.hrl\\'" flymake-syntaxerl))
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.app\\'" flymake-syntaxerl))
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.app.src\\'" flymake-syntaxerl))
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.config\\'" flymake-syntaxerl))
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.rel\\'" flymake-syntaxerl))
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.script\\'" flymake-syntaxerl))
+             (add-to-list 'flymake-allowed-file-name-masks '("\\.escript\\'" flymake-syntaxerl))
+
+             ;; should be the last.
+             (flymake-mode 1)
+             ))
+
+;; Stolen from http://www.emacswiki.org/emacs/FlyMake
+;; Shows flymake message even in xterm by typing C-c f
+(defun my-flymake-err-at (pos)
+  (let ((overlays (overlays-at pos)))
+    (remove nil
+            (mapcar (lambda (overlay)
+                      (and (overlay-get overlay 'flymake-overlay)
+                           (overlay-get overlay 'help-echo)))
+                    overlays))))
+
+(defun my-flymake-err-echo ()
+  (interactive)
+  (message "%s" (mapconcat 'identity (my-flymake-err-at (point)) "\n")))
+
+(global-set-key (kbd "C-c f") 'my-flymake-err-echo)
+
+;; Avoids some flymake crashses.
+
+(eval-after-load "flymake"
+    '(setq flymake-gui-warnings-enabled nil
+           flymake-log-level 0))
 
 ;; EQC Emacs Mode -- Configuration Start
 ;; (add-to-list 'load-path "/usr/local/lib/erlang/lib/eqc-1.22/emacs/")
@@ -39,61 +114,18 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
-;; CoffeeScript
-(custom-set-variables '(coffee-tab-width 2))
-(setq tab-width 2)
-
-;; Stolen from http://www.emacswiki.org/emacs/FlyMake
-;; Shows flymake message even in xterm by typing C-c f
-;; (defun my-flymake-err-at (pos)
-;;   (let ((overlays (overlays-at pos)))
-;;     (remove nil
-;;             (mapcar (lambda (overlay)
-;;                       (and (overlay-get overlay 'flymake-overlay)
-;;                            (overlay-get overlay 'help-echo)))
-;;                     overlays))))
- 
-;; (defun my-flymake-err-echo ()
-;;   (interactive)
-;;   (message "%s" (mapconcat 'identity (my-flymake-err-at (point)) "\n")))
- 
-;; (global-set-key (kbd "C-c f") 'my-flymake-err-echo)
-
-;; ;; Avoids some flymake crashses.
-
-;; (eval-after-load "flymake"
-;;     '(setq flymake-gui-warnings-enabled nil
-;;            flymake-log-level 0))
-
-;; (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-;;                          ("marmalade" . "http://marmalade-repo.org/packages/")
-;;                          ("melpa" . "http://melpa.milkbox.net/packages/")))
-
-;; (require 'package)
-;; (package-initialize)
-
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
-;(eval-after-load "magit" 
-;  '(mapc (apply-partially 'add-to-list 'magit-repo-dirs)
-;               '("~/dev/src/project1" "~/dev/src/project2")))
+(eval-after-load "magit" 
+ '(mapc (apply-partially 'add-to-list 'magit-repo-dirs)
+              '("~/layer/ctrl" "~/layer/ecu" "~/layer/edb" "~/layer/esd" "~/layer/rabbitmq-erlang-client" "~/layer/tmc" "~/layer/shift")))
 
 ;; change magit diff colors
 (eval-after-load 'magit
   '(progn
      (set-face-background 'magit-item-highlight "White")))
-
-;; JavaScript
-(autoload 'js3-mode "js3" nil t)
-   (add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
-
-(require 'handlebars-mode)
-
-;; ;; go mode
-;; (setq load-path (cons "/usr/local/go/misc/emacs" load-path))
-;; (require 'go-mode-load)
 
 ;; ;; .org
 ;; (setq load-path (cons "/Users/maggie-mbp/Downloads/Other/org-mode/lisp" load-path))
@@ -142,7 +174,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(edts-man-root "~/.emacs.d/edts/doc/R16B03"))
+ '(edts-man-root "/Users/juan/.emacs.d/edts/doc/17.1"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

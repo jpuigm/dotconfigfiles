@@ -103,13 +103,13 @@
 (setq-default indent-tabs-mode nil)
 (setq-default c-basic-offset 4)
 
+;; Fill Column Indicator - http://www.emacswiki.org/emacs/FillColumnIndicator
 (add-to-list 'load-path "~/.emacs.d/elpa/fill-column-indicator-20140509.1101/")
 (require 'fill-column-indicator)
 (setq-default fill-column 100)
 (setq-default fci-rule-width 1)
 (setq-default fci-rule-color "#686A66")
-(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode 1)
+(add-hook 'erlang-mode-hook 'fci-mode) ;; Only enabled for erlang files
 
 ;; Misc
 (line-number-mode)

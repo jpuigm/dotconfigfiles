@@ -21,6 +21,8 @@
           '(lambda()
              (imenu-add-to-menubar "Imenu")))
 
+;;(add-hook 'erlang-mode-hook 'whitespace-mode)
+
 ; define auto erlang mode for these files/extensions.
 (add-to-list 'auto-mode-alist '(".*\\.app\\'" . erlang-mode))
 (add-to-list 'auto-mode-alist '(".*app\\.src\\'" . erlang-mode))
@@ -104,12 +106,12 @@
 (setq-default c-basic-offset 4)
 
 ;; Fill Column Indicator - http://www.emacswiki.org/emacs/FillColumnIndicator
-(add-to-list 'load-path "~/.emacs.d/elpa/fill-column-indicator-20140509.1101/")
-(require 'fill-column-indicator)
-(setq-default fill-column 100)
-(setq-default fci-rule-width 1)
-(setq-default fci-rule-color "#686A66")
-(add-hook 'erlang-mode-hook 'fci-mode) ;; Only enabled for erlang files
+;; (add-to-list 'load-path "~/.emacs.d/elpa/fill-column-indicator-20140509.1101/")
+;; (require 'fill-column-indicator)
+;; (setq-default fill-column 100)
+;; (setq-default fci-rule-width 1)
+;; (setq-default fci-rule-color "#686A66")
+;; (add-hook 'erlang-mode-hook 'fci-mode) ;; Only enabled for erlang files
 
 ;; Misc
 (line-number-mode)
@@ -190,13 +192,6 @@
  ;; If there is more than one, they won't work right.
  )
 
-;;rsense
-(require 'rsense)
-
-;;rinari
-(require 'rinari)
-(global-rinari-mode)
-
 ;; Ruby lines
-(add-hook 'after-init-hook 'inf-ruby-switch-setup)
-(add-hook 'ruby-mode-hook 'linum-mode) ;; technically using 'prog-mode-hook instead would work for all major prog modes
+;; (add-hook 'after-init-hook 'inf-ruby-switch-setup)
+;; (add-hook 'ruby-mode-hook 'linum-mode) ;; technically using 'prog-mode-hook instead would work for all major prog modes

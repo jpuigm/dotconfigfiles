@@ -1,0 +1,12 @@
+#!/bin/bash
+
+APP_NAME=tmux
+REPOSITORY_DIR=/vagrant/src/github.com/jpuigm
+REPOSITORY_NAME=dotconfigfiles
+CONFIG_DIR=${APP_NAME}_config
+CONFIG_FILE=tmux.conf
+
+
+echo "Installing ${APP_NAME} configuration..."
+ln -s -v $REPOSITORY_DIR/$REPOSITORY_NAME/$CONFIG_DIR/$CONFIG_FILE $HOME/.$APP_NAME.conf
+echo "Done!"

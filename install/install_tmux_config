@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_NAME=tmux
-REPOSITORY_DIR=/vagrant/src/github.com/jpuigm
+REPOSITORY_DIR=~/src/github.com/jpuigm
 REPOSITORY_NAME=dotconfigfiles
 CONFIG_DIR=${APP_NAME}_config
 CONFIG_FILE=tmux.conf

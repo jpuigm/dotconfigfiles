@@ -1,11 +1,11 @@
 #!/bin/bash
 
 APP_NAME=emacs
-REPOSITORY_DIR=/vagrant/src/github.com/jpuigm
+REPOSITORY_DIR=~/src/github.com/jpuigm
 REPOSITORY_NAME=dotconfigfiles
-CONFIG_DIR=$APP_NAME_config
+CONFIG_DIR=${APP_NAME}_config
 CONFIG_FILE=basic.el
 
 echo "Installing basic ${APP_NAME} configuration..."
-ln -s -q $REPOSITORY_DIR/$REPOSITORY_NAME/$CONFIG_DIR/$CONFIG_FILE $HOME/.$APP_NAME
+ln -s -v $REPOSITORY_DIR/$REPOSITORY_NAME/${CONFIG_DIR}/$CONFIG_FILE $HOME/.$APP_NAME
 echo "Done!"

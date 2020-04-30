@@ -3,11 +3,11 @@
 (package-initialize)
 
 ;; Set user information
-(setq user-full-name "Juan Puig Martinez")
-(setq user-mail-address "juan.puig@gmail.com")
+(setq user-full-name "Your Name")
+(setq user-mail-address "your@email.com")
 
 ;; default emacs configuration directory
-(defconst toc:emacs-config-dir "/vagrant/src/github.com/jpuigm/dotconfigfiles/emacs_config/" "")
+(defconst toc:emacs-config-dir "~/src/github.com/jpuigm/dotconfigfiles/emacs_config/" "")
 
 ;; utility function to auto-load my package configurations
 (defun toc:load-config-file (filelist)

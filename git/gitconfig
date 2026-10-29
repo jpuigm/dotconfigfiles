@@ -1,0 +1,7 @@
+[user]
+	name = Juan Puig
+	email = juan.puig@gmail.com
+[init]
+	defaultBranch = main
+[core]
+	editor = emacsclient -t

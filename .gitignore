@@ -1,1 +1,4 @@
 *~
+.DS_Store
+# Per-machine / generated, lives next to the symlinked files
+emacs/custom.el

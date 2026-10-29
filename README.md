@@ -1,66 +1,40 @@
 # dotconfigfiles
 
-Repository hosting my personal config files.
+My personal dotfiles. Each directory holds the files for one tool; `install.sh` symlinks them into `$HOME`, so editing a config in place edits the repo.
 
-## Configure emacs
+| Directory | Links to |
+|-----------|----------|
+| `emacs/`  | `~/.emacs.d/init.el`, `~/.emacs.d/erlang.el` |
+| `tmux/`   | `~/.tmux.conf`, `~/.tmux/scripts/` |
+| `zsh/`    | `~/.zshrc` |
+| `bash/`   | `~/.bashrc`, `~/.profile` |
+| `git/`    | `~/.gitconfig` |
+| `claude/` | `~/.claude/settings.json`, `~/.claude/statusline-capture.sh` |
 
-### Getting started
-
-To setup the basic emacs configuration, simply run the script located under `install` directory.
-
-```
-$ install/install_emacs_config
-```
-
-It does create a symbolic link from the home directory to this repository, loading `basic.el`. This file has the ability to load further confuguration files as needed (see `load-config-files`).
-
-### Install additional packages
-
-This emacs gets configure with a number of emacs package repositories. To launch the `package` mode,
+## Install
 
 ```
-M-x package-list-packages
+git clone git@github.com:jpuigm/dotconfigfiles.git
+cd dotconfigfiles
+./install.sh
 ```
 
-Recommended packages:
-- `markdown-mode`
-- `magit`
+Existing files are moved aside as `<name>.bak-<timestamp>`; running it again is safe.
 
-### Git repositories
+Afterwards:
 
-emacs provides a great tool to manage git repositories, `magit`. To install it, simply select it in the package manager. To launch `magit` mode,
+- **tmux:** start tmux and press `prefix + I` to install the plugins (TPM is cloned by the script).
+- **emacs:** packages are installed on first start by `use-package`. Settings made through `M-x customize` go to `~/.emacs.d/custom.el`, which is not tracked.
+- **zsh:** expects [Oh My Zsh](https://ohmyz.sh/) in `~/.oh-my-zsh` and nvm in `~/.nvm`.
 
-```
-M-x magit
-```
+## How the tmux status bar gets Claude usage
 
-## Configure tmux
+`claude/settings.json` sets `claude/statusline-capture.sh` as Claude Code's status line. It saves the session JSON to `~/.cache/claude-usage.json`, and `tmux/scripts/claude-usage.sh` reads the rate limits from it (needs `jq`).
 
-### Getting started
+## Not tracked
 
-To setup tmux configuration, simpy run the script located under `install` directory.
+`~/.claude/.credentials.json`, history, sessions and anything else under `~/.claude` other than the two files above.
 
-```
-$ install/install_tmux.config
-```
+## History
 
-It does create a symbolic link from the home directory to this repository, loading `tmux.conf`. This file contains two references:
-
-#### Battery-powered computers
-
-* Two scripts that will display battery information. See [Battery](https://github.com/Goles/Battery) and [tmux_battery_charge_indicator](https://github.com/AaronLasseigne/tmux_battery_charge_indicator) for further information.
-* `tmux-mem-cpu-load` that you can install via brew
-
-## Configure git
-
-```
-$ git config --global user.name "Your Name"
-$ git config --global user.email your@email.com
-$ git config --global core.editor emacs
-```
-
-Check that your configuration is properly setup,
-
-```
-$ git config --list
-```
+The pre-2026 configuration (ido-mode emacs, EDTS, jabber, old tmux battery scripts) is preserved at the `legacy-2020` tag.

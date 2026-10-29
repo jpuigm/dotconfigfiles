@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Symlink the files in this repo into $HOME.
+# Symlink the files in this repo into $HOME (Linux and macOS).
 # Idempotent: correct links are left alone, anything else is moved to <name>.bak-<timestamp>.
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STAMP="$(date +%Y%m%d%H%M%S)"
+
+OS="$(uname -s)"
 
 # repo path (relative to this dir) -> target path (relative to $HOME)
 LINKS=(
@@ -13,12 +15,15 @@ LINKS=(
   "tmux/tmux.conf:.tmux.conf"
   "tmux/scripts:.tmux/scripts"
   "zsh/zshrc:.zshrc"
-  "bash/bashrc:.bashrc"
-  "bash/profile:.profile"
   "git/gitconfig:.gitconfig"
   "claude/settings.json:.claude/settings.json"
   "claude/statusline-capture.sh:.claude/statusline-capture.sh"
 )
+
+# The bash files are Ubuntu's stock ones plus tweaks; macOS uses zsh and its own defaults
+if [ "$OS" = "Linux" ]; then
+  LINKS+=("bash/bashrc:.bashrc" "bash/profile:.profile")
+fi
 
 for entry in "${LINKS[@]}"; do
   src="$REPO/${entry%%:*}"
@@ -38,3 +43,11 @@ done
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
   git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
+
+# Things the configs call out to, so a missing one is not a mystery later
+for cmd in git tmux emacs zsh jq; do
+  command -v "$cmd" >/dev/null 2>&1 || echo "note: '$cmd' not found" \
+    "(${OS}: $([ "$OS" = Darwin ] && echo "brew install $cmd" || echo "apt install $cmd"))"
+done
+[ -d "$HOME/.oh-my-zsh" ] || echo "note: Oh My Zsh not found, see https://ohmyz.sh/"
+[ -d "$HOME/.nvm" ] || echo "note: nvm not found, see https://github.com/nvm-sh/nvm"

@@ -7,9 +7,24 @@ My personal dotfiles. Each directory holds the files for one tool; `install.sh` 
 | `emacs/`  | `~/.emacs.d/init.el`, `~/.emacs.d/erlang.el` |
 | `tmux/`   | `~/.tmux.conf`, `~/.tmux/scripts/` |
 | `zsh/`    | `~/.zshrc` |
-| `bash/`   | `~/.bashrc`, `~/.profile` |
+| `bash/`   | `~/.bashrc`, `~/.profile` (Linux only) |
 | `git/`    | `~/.gitconfig` |
 | `claude/` | `~/.claude/settings.json`, `~/.claude/statusline-capture.sh` |
+
+Works on Linux and macOS. On macOS the bash files are skipped (zsh is the default shell there) and the tmux battery indicator reads `pmset` instead of `/sys`.
+
+## Requirements
+
+`git`, `tmux`, `emacs` (29+, for built-in `use-package`), `zsh`, `jq`, and the JetBrains Mono font.
+
+```
+# macOS
+brew install git tmux emacs zsh jq
+brew install --cask font-jetbrains-mono
+
+# Debian/Ubuntu
+sudo apt install git tmux emacs zsh jq fonts-jetbrains-mono
+```
 
 ## Install
 
@@ -19,7 +34,7 @@ cd dotconfigfiles
 ./install.sh
 ```
 
-Existing files are moved aside as `<name>.bak-<timestamp>`; running it again is safe.
+Existing files are moved aside as `<name>.bak-<timestamp>`; running it again is safe. The script prints a note for any missing tool it expects.
 
 Afterwards:
 

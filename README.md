@@ -10,6 +10,8 @@ My personal dotfiles. Each directory holds the files for one tool; `install.sh` 
 | `bash/`   | `~/.bashrc`, `~/.profile` (Linux only) |
 | `git/`    | `~/.gitconfig` |
 | `claude/` | `~/.claude/settings.json`, `~/.claude/statusline-capture.sh` |
+| `alacritty/` | `~/.config/alacritty/alacritty.toml` |
+| `bin/`    | `~/.local/bin/dotsync` |
 
 Works on Linux and macOS. On macOS the bash files are skipped (zsh is the default shell there) and the tmux battery indicator reads `pmset` instead of `/sys`.
 
@@ -46,9 +48,23 @@ Afterwards:
 
 `claude/settings.json` sets `claude/statusline-capture.sh` as Claude Code's status line. It saves the session JSON to `~/.cache/claude-usage.json`, and `tmux/scripts/claude-usage.sh` reads the rate limits from it (needs `jq`).
 
+## Keeping changes in sync
+
+Because everything is symlinked, local edits are repo edits. `dotsync` shows what changed, then commits and pushes on confirmation:
+
+```
+dotsync                    # review, prompt for message, push
+dotsync "tweak tmux keys"  # same, with the message given
+./install.sh --check       # report links that are missing or replaced by a regular file
+```
+
+## Roadmap
+
+Ideas for improving the tmux/remote/Claude workflow are tracked in [`docs/productivity-roadmap.md`](docs/productivity-roadmap.md).
+
 ## Not tracked
 
-`~/.claude/.credentials.json`, history, sessions and anything else under `~/.claude` other than the two files above.
+`~/.claude/.credentials.json`, history, sessions and anything else under `~/.claude` other than the two files above (including `skills/synced`, which is account-managed).
 
 ## History
 

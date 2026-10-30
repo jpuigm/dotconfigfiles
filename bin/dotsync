@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Review local dotfile changes and, on confirmation, commit and push them.
+# Usage: dotsync [commit message]
+set -euo pipefail
+
+REPO="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+git() { command git -C "$REPO" "$@"; }
+
+"$REPO/install.sh" --check || echo "(fix with: $REPO/install.sh)"
+echo
+
+git fetch --quiet || echo "note: fetch failed, remote state may be stale"
+behind="$(git rev-list --count HEAD..@{u} 2>/dev/null || echo 0)"
+[ "$behind" -gt 0 ] && echo "note: $behind commit(s) on the remote not pulled yet (git -C $REPO pull --rebase)"
+
+ahead="$(git rev-list --count @{u}..HEAD 2>/dev/null || echo 0)"
+if [ -z "$(git status --porcelain)" ]; then
+  if [ "$ahead" -eq 0 ]; then echo "Nothing to sync."; exit 0; fi
+  echo "No local changes, but $ahead unpushed commit(s)."
+else
+  git status -sb
+  echo
+  git add -N . # make new files show up in the diff
+  git diff --stat
+  read -rp "Show full diff? [y/N] " ans
+  [ "$ans" = y ] && git diff
+  echo
+  msg="${*:-}"
+  [ -n "$msg" ] || read -rp "Commit message (empty to abort): " msg
+  [ -n "$msg" ] || { echo "Aborted; changes left uncommitted."; git reset -q; exit 1; }
+  git add -A
+  git commit -m "$msg"
+fi
+
+read -rp "Push to $(git rev-parse --abbrev-ref @{u})? [y/N] " ans
+[ "$ans" = y ] && git push || echo "Not pushed."

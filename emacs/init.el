@@ -43,8 +43,8 @@
   :init (marginalia-mode))
 
 ;; --- 5. THE THEME ---
-(use-package doom-themes
-  :config (load-theme 'doom-one t))
+;; Built in to Emacs 28+; high-contrast, so comments and strings stay readable
+(load-theme 'modus-vivendi t)
 
 ;; --- 6. DEVELOPER ESSENTIALS ---
 (use-package magit) ; The best Git interface in existence

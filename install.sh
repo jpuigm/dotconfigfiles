@@ -19,6 +19,7 @@ LINKS=(
   "git/gitconfig:.gitconfig"
   "claude/settings.json:.claude/settings.json"
   "claude/statusline-capture.sh:.claude/statusline-capture.sh"
+  "claude/CLAUDE.md:.claude/CLAUDE.md"
   "alacritty/alacritty.toml:.config/alacritty/alacritty.toml"
   "bin/dotsync:.local/bin/dotsync"
 )

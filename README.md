@@ -9,7 +9,7 @@ My personal dotfiles. Each directory holds the files for one tool; `install.sh` 
 | `zsh/`    | `~/.zshrc` |
 | `bash/`   | `~/.bashrc`, `~/.profile` (Linux only) |
 | `git/`    | `~/.gitconfig` |
-| `claude/` | `~/.claude/settings.json`, `~/.claude/statusline-capture.sh` |
+| `claude/` | `~/.claude/settings.json`, `~/.claude/statusline-capture.sh`, `~/.claude/CLAUDE.md` |
 | `alacritty/` | `~/.config/alacritty/alacritty.toml` |
 | `bin/`    | `~/.local/bin/dotsync` |
 
@@ -64,7 +64,7 @@ Ideas for improving the tmux/remote/Claude workflow are tracked in [`docs/produc
 
 ## Not tracked
 
-`~/.claude/.credentials.json`, history, sessions and anything else under `~/.claude` other than the two files above (including `skills/synced`, which is account-managed).
+`~/.claude/.credentials.json`, history, sessions and anything else under `~/.claude` other than the three files above (including `skills/synced`, which is account-managed).
 
 ## History
 

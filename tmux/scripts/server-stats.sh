@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Host, load, memory and disk pills for the tmux status bar (Linux and macOS).
-# Only prints on machines WITHOUT a battery (servers, mini): laptops already have these in the desktop bar.
+# The host pill is always shown; load/memory/disk only on machines WITHOUT a battery
+# (servers, mini), since laptops already have those in the desktop bar.
 # Set TMUX_STATS=1 to force output anyway (for testing).
 
 has_battery() {
@@ -10,8 +11,6 @@ has_battery() {
     ls /sys/class/power_supply/BAT* >/dev/null 2>&1
   fi
 }
-[ -z "$TMUX_STATS" ] && has_battery && exit 0
-
 # color for a percentage: grey, orange from $2, red from $3
 color() {
   if   [ "$1" -ge "$3" ]; then echo "#bf616a"
@@ -22,6 +21,9 @@ pill() { printf '#[fg=white,bg=%s,bold] %s #[default]' "$1" "$2"; }
 
 # host
 pill "#5e81ac" "$(hostname -s)"
+
+# laptops stop here
+[ -z "$TMUX_STATS" ] && has_battery && exit 0
 
 # load (1 min), orange above core count, red above twice that
 if [ "$(uname -s)" = "Darwin" ]; then

@@ -3,10 +3,10 @@
 ;; --- 1. GUI CLEANUP ---
 ;; Make it look like a modern app, not a 1990s workstation
 (setq inhibit-startup-message t)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(set-fringe-mode 10)
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'set-fringe-mode) (set-fringe-mode 10))
 (set-face-attribute 'default nil :font "JetBrains Mono" :height 120)
 
 ;; --- 2. PACKAGE MANAGEMENT ---

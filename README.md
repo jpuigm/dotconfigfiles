@@ -36,13 +36,13 @@ cd dotconfigfiles
 ./install.sh
 ```
 
-Existing files are moved aside as `<name>.bak-<timestamp>`; running it again is safe. The script prints a note for any missing tool it expects.
+Existing files are moved aside as `<name>.bak-<timestamp>`; running it again is safe. For anything it expects but can't find (the tools above, Oh My Zsh, nvm) the script asks before installing it; `./install.sh --yes` installs them all without asking, and with no terminal it just prints a note.
 
 Afterwards:
 
 - **tmux:** start tmux and press `prefix + I` to install the plugins (TPM is cloned by the script).
 - **emacs:** packages are installed on first start by `use-package`. Settings made through `M-x customize` go to `~/.emacs.d/custom.el`, which is not tracked.
-- **zsh:** expects [Oh My Zsh](https://ohmyz.sh/) in `~/.oh-my-zsh` and nvm in `~/.nvm`.
+- **zsh:** expects [Oh My Zsh](https://ohmyz.sh/) in `~/.oh-my-zsh` and [nvm](https://github.com/nvm-sh/nvm) in `~/.nvm`. The script clones both rather than running their installers, which would rewrite the linked `~/.zshrc`.
 
 ## How the tmux status bar gets Claude usage
 

@@ -34,7 +34,12 @@
 ;; --- 4. MODERN INTERFACE (VERTICO) ---
 ;; This makes the "Minibuffer" (bottom bar) behave like a modern search
 (use-package vertico
-  :init (vertico-mode))
+  :init (vertico-mode)
+  :bind (:map vertico-map
+         ("DEL"   . vertico-directory-delete-char)  ; backspace after "/" removes the whole folder
+         ("M-DEL" . vertico-directory-delete-word)
+         ("RET"   . vertico-directory-enter))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package orderless
   :custom (completion-styles '(orderless basic)))

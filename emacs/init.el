@@ -52,18 +52,18 @@
 (load-theme 'modus-vivendi t)
 
 ;; --- 6. DEVELOPER ESSENTIALS ---
-(use-package magit ; The best Git interface in existence
-  :config
-  (defun my/magit-refresh-visible ()
-    "Refresh magit-status buffers that are on screen. Skipped while typing in the minibuffer."
-    (unless (or (active-minibuffer-window) (bound-and-true-p magit-inhibit-refresh))
-      (dolist (buf (buffer-list))
-        (when (and (buffer-live-p buf)
-                   (get-buffer-window buf t)
-                   (eq (buffer-local-value 'major-mode buf) 'magit-status-mode))
-          (with-current-buffer buf (magit-refresh-buffer))))))
-  ;; Poll while idle, so changes from Claude, shells or other tools show up
-  (run-with-idle-timer 3 t #'my/magit-refresh-visible))
+(use-package magit) ; The best Git interface in existence
+
+;; Top level (not in :config) so emacsclient can call it even before magit loads.
+;; Called from the Claude PostToolUse hook; no idle timer, to keep load low.
+(defun my/magit-refresh-visible ()
+  "Refresh magit-status buffers that are on screen. Skipped while typing in the minibuffer."
+  (unless (or (active-minibuffer-window) (bound-and-true-p magit-inhibit-refresh))
+    (dolist (buf (buffer-list))
+      (when (and (buffer-live-p buf)
+                 (get-buffer-window buf t)
+                 (eq (buffer-local-value 'major-mode buf) 'magit-status-mode))
+        (with-current-buffer buf (magit-refresh-buffer))))))
 
 (use-package project
   :ensure nil) ; Built-in project management

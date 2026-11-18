@@ -9,6 +9,18 @@
 (when (fboundp 'set-fringe-mode) (set-fringe-mode 10))
 (set-face-attribute 'default nil :font "JetBrains Mono" :height 120)
 
+;; --- 1b. PATH FOR DAEMONS ---
+;; Daemons started by launchd/systemd get a minimal PATH, so tools from
+;; Homebrew/Linuxbrew (git-crypt, etc.) are not found. Add whichever exists.
+(dolist (dir '("/opt/homebrew/bin"                    ; macOS, Apple Silicon
+               "/usr/local/bin"                       ; macOS Intel / Unix
+               "/home/linuxbrew/.linuxbrew/bin"       ; Linuxbrew
+               "~/.local/bin"))
+  (let ((dir (expand-file-name dir)))
+    (when (and (file-directory-p dir) (not (member dir exec-path)))
+      (add-to-list 'exec-path dir)
+      (setenv "PATH" (concat dir path-separator (getenv "PATH"))))))
+
 ;; --- 2. PACKAGE MANAGEMENT ---
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")

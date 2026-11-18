@@ -2,10 +2,24 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "theme": "dark",
+  "model": "sonnet",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline-capture.sh"
   },
-  "model": "sonnet"
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "emacsclient -e '(my/magit-refresh-visible)' >/dev/null 2>&1 || true"
+          }
+        ]
+      }
+    ]
+  },
+  "theme": "dark",
+  "agentPushNotifEnabled": true
 }
